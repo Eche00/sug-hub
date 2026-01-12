@@ -1,37 +1,229 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SUG Hub
 
-## Getting Started
+**SUG Hub** is a centralized digital platform designed to improve communication, transparency, and student engagement within the Students’ Union Government (SUG). It provides public-facing information for students and a secure admin panel for managing content and anonymous feedback.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+##  Overview
+
+SUG Hub serves as:
+
+* An **official information hub** for students
+* A **management system** for SUG executives
+* A **safe anonymous feedback channel** for student voices
+
+The platform prioritizes **clarity, moderation, and student safety**.
+
+---
+
+##  Features
+
+###  Public Pages
+
+* **Home/Announcements**
+* **About the SUG**
+* **Events**
+* **EXCOs (by academic year)**
+* **Student Voice (Anonymous Feedback)** ⭐
+
+---
+
+###  Admin / SUG Panel
+
+* Create, edit, and delete announcements
+* Manage events
+* Manage EXCOs by year
+* Review anonymous student feedback
+* Flag, mark, or delete inappropriate messages
+
+---
+
+## 🗂️ Site Structure
+
+```
+Home
+ ├── About SUG
+ ├── Announcements
+ ├── Events
+ ├── EXCOs
+ │     ├── 2022/2023
+ │     ├── 2023/2024
+ │     └── 2024/2025
+ ├── Student Voice (Anonymous Feedback)
+ └── Contacts
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+##  Core Feature: Student Voice
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The **Student Voice** feature allows students to share concerns and suggestions **anonymously**.
 
-## Learn More
+### Student Experience
 
-To learn more about Next.js, take a look at the following resources:
+> “This platform allows students to freely express concerns and suggestions.
+> Messages are anonymous. Offensive language is not allowed.”
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Form Fields**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+* Category (optional)
+* Message (required)
+* Submit anonymously
+* Character counter
+* Success / error feedback
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+##  Safety & Moderation
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# sug-hub
+### Keyword Filtering System
+
+To prevent abuse:
+
+1. Messages are converted to lowercase
+2. Scanned against a banned words list
+3. Offensive content is either:
+
+   * Blocked
+   * Or masked before storage
+
+#### Example Banned Words JSON
+
+```json
+{
+  "bannedWords": [
+    "abuse",
+    "insult",
+    "threat",
+    "violence",
+    "hate"
+  ]
+}
+```
+
+---
+
+###  Blocked Message Response
+
+```json
+{
+  "error": "Your message contains restricted words. Please revise and submit again."
+}
+```
+
+---
+
+##  Data Structure
+
+### Feedback Storage Example
+
+```json
+{
+  "feedbacks": [
+    {
+      "id": "fb_001",
+      "category": "Academics",
+      "message": "We need more library hours during exams.",
+      "createdAt": "2026-03-10T14:22:00",
+      "status": "unreviewed"
+    }
+  ]
+}
+```
+
+---
+
+##  Admin Moderation View
+
+| Category  | Message                          | Status     | Action |
+| --------- | -------------------------------- | ---------- | ------ |
+| Welfare   | Hostels need better water supply | Unreviewed | View   |
+| Academics | More revision classes needed     | Reviewed   | Flag   |
+
+---
+
+##  Important Safety Notes
+
+* No usernames collected
+* No IP addresses displayed on UI
+* No public message wall (MVP phase)
+* Clear disclaimer shown to users
+* Admin-only access to all feedback
+
+---
+
+##  Development Plan (10 Days)
+
+### Day 1 – Planning & UX Flow
+
+* Define feedback rules
+* Abuse prevention strategy
+* UX sketches for Student Voice
+* Admin moderation flow
+* Next.js setup
+* Pages setup
+
+### Day 2 – Project Setup & Layout
+
+* Navigation & footer UI
+* Responsive layout
+* Routing
+* Meta names and description
+
+### Day 3 – About SUG Page
+
+### Day 4 – Announcements
+
+### Day 5 – Events
+
+### Day 6 – EXCOs Page
+
+### Day 7 – Student Voice ⭐
+
+* Feedback form
+* Validation
+* Anonymous submission handling
+
+### Day 8 – Keyword Filtering
+
+* Banned words system
+* Message validation & masking
+
+### Day 9 – Admin Moderation Panel
+
+* View & filter feedback
+* Review, flag, dismiss, or delete entries
+
+### Day 10 – Testing & Deployment
+
+* End-to-end testing
+* Mobile responsiveness
+* Deployment (Vercel / Netlify)
+
+---
+
+##  Why This Works
+
+✅ Encourages honest student expression
+✅ Protects SUG credibility
+✅ Prevents abuse and misuse
+✅ Scalable for future features (polls, voting, surveys)
+
+---
+
+##  Future Enhancements
+
+* Polls & voting
+* Analytics dashboard
+* Role-based admin access
+* Notification system
+
+---
+
+##  Tech Stack
+
+* **Frontend:** Next.js / Ts
+* **Styling:** Tailwind CSS
+* **Backend:** Firebase 
+* **Deployment:** Vercel 
+
