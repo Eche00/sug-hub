@@ -3,7 +3,7 @@ import React from 'react'
 
 function Header() {
     return (
-        <div className='bg-white sm:py-4 py-5 flex md:sticky fixed top-0 left-0 w-full'>
+        <div className='bg-white sm:py-4 py-5 flex md:sticky fixed top-0 left-0 w-full z-10'>
             {/* Logo Section  */}
             <div className="md:hidden flex items-center relative">
                 <span className="flex items-center w-full rounded-lg px-4 text-[16px] font-extrabold text-[#1B7339] tracking-wide">
