@@ -1,5 +1,5 @@
 import Announcement from "./announcement/Announcement";
-import EventsCta from "./events/EventsCta";
+import EventsCta from "../components/EventsCta";
 
 export default function Home() {
   return (
