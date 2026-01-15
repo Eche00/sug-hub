@@ -63,7 +63,7 @@ export default function ExcosPage() {
                   onClick={() => handleYearClick(year)}
                   className={`px-6 py-3 rounded-full font-medium transition-all duration-300 transform hover:scale-105 ${selectedYear === year
                     ? 'hover:bg-green-900 bg-green-800 text-white shadow-lg shadow-green-200 cursor-pointer'
-                    : 'hover: bg-gray-50 bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400 cursor-pointer'
+                    : 'hover: bg-gray-50  text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400 cursor-pointer'
                     }`}
                 >
                   {year}

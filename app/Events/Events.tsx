@@ -1,5 +1,4 @@
-import { ArrowOutward, Attribution, OpenInBrowser, Send, Share, ThumbDown, ThumbUp } from '@mui/icons-material'
-import React from 'react'
+import { OpenInBrowser, Share, ThumbDown, ThumbUp } from '@mui/icons-material'
 
 function Events() {
     return (
