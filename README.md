@@ -227,3 +227,56 @@ To prevent abuse:
 * **Backend:** Firebase 
 * **Deployment:** Vercel 
 
+
+### Feedback Rules 
+
+Purpose:
+Allow students to share honest opinions while maintaining respect and order.
+Core Rules
+•	Submissions are anonymous by default
+•	No personal identity details are requested or stored
+•	Feedback must be clear, respectful, and issue-focused
+•	Messages are text-only
+•	Very short or empty submissions are not allowed
+What Students Can Share
+•	Concerns about academics, welfare, or campus life
+•	Suggestions for improvement
+•	General student opinions
+What Is Not Allowed
+•	Attacks on individuals
+•	Threatening or violent language
+•	Hate or discriminatory speech
+•	Spam or repeated messages
+
+
+### Abuse Prevention Strategy 
+
+Purpose:
+Protect the platform from misuse without discouraging genuine student feedback.
+Preventive Measures
+•	Messages are checked automatically before submission
+•	Certain words and phrases trigger restrictions
+•	Harmful language stops the message from being sent
+•	Mildly inappropriate terms are hidden or altered
+
+Design Principles
+•	Prevention happens quietly in the background
+•	Students are informed politely if a message is rejected
+•	No public display of feedback to avoid misuse
+
+
+### Admin Moderation Flow 
+
+Purpose:
+Give SUG executives a clear, calm, and organized way to handle student feedback.
+Feedback Lifecycle
+1.	Message is submitted
+2.	Message enters the admin panel as “new”
+3.	Admin reviews content
+4.	Admin decides next action
+
+Admin Actions
+•	Mark as reviewed
+•	Flag for attention
+•	Resolve after action is taken
+•	Remove if it breaks platform rules

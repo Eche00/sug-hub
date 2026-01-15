@@ -21,10 +21,10 @@ function Mobilenav() {
     ];
 
     return (
-        <div className="w-fit mx-auto  shadow-2xl  rounded-full bg-[#161B22] p-1">
+        <div className="w-fit mx-auto  shadow-2xl  rounded-full bg-[#161B22] p-1 ">
             <nav className=" flex items-center justify-between w-full text-[12px] ">
                 {sideBarItems.map((item) => (
-                    <Link href={item.link}>
+                    <Link key={item.link} href={item.link}>
                         <div className={pathname === item.link ? 'flex justify-center items-center text-white font-bold w-14.75 h-14.75 bg-[#1B7339] rounded-full' : 'flex justify-center items-center text-gray-400 w-14.75 h-14.75'}>
                             <item.icon className={pathname === item.link ? 'text-white' : 'text-gray-400'} fontSize='large' />
                         </div>
