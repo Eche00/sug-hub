@@ -12,7 +12,7 @@ function Header() {
                 </span>
             </div>
             <div className='flex flex-1/3 border-2 border-gray-400 rounded-lg py-2 px-4'> <input type="text" placeholder='Search...' className='flex flex-1 outline-none' /> <Search /></div>
-            <div className='hidden md:flex flex-1 '>h</div>
+            <div className='hidden md:flex flex-1 '></div>
         </div>
     )
 }
