@@ -31,7 +31,7 @@ export default function ExcosPage() {
   }
 
   return (
-    <main>
+     <main>
       {/* Header */}
       <div className="bg-linear-to-r from-green-800 to-blue-800 text-white rounded-tr-xl rounded-tl-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -84,28 +84,30 @@ export default function ExcosPage() {
           </div>
         </div>
 
+    
         {/* Executives Scroller Section */}
-        <div className="mb-16">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-2xl font-bold text-gray-900">
-              {selectedYear} Executive Committee
-            </h3>
-            <div className="text-gray-600">
-              <span className="font-medium">{currentExcos.length}</span> members
-            </div>
-          </div>
+<div className="mb-16 w-full overflow-hidden">
+  <div className="flex items-center justify-between mb-6 px-4 sm:px-0">
+    <h3 className="text-2xl font-bold text-gray-900">
+      {selectedYear} Executive Committee
+    </h3>
+    <div className="text-gray-600 hidden sm:block">
+      <span className="font-medium">{currentExcos.length}</span> members
+    </div>
+  </div>
 
-          {/* Horizontal Scroller */}
-          <div className="relative">
-            <div className="overflow-x-auto pb-8 -mx-4 px-4">
-              <div className="flex space-x-6 min-w-max">
-                {currentExcos.map((exco: Executive) => (
-                  <ExcoCard key={exco.id} exco={exco} />
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+  <div className="relative w-full overflow-hidden">
+  <div className="overflow-x-auto overscroll-x-contain scrollbar-hide">
+    <div className="flex gap-4 px-4 sm:px-6 py-4 w-max">
+      {currentExcos.map((exco: Executive) => (
+        <ExcoCard key={exco.id} exco={exco} />
+      ))}
+    </div>
+  </div>
+</div>
+
+</div>
+
 
         {/* Quick Stats */}
         <div className="bg-linear-to-r from-green-50 to-blue-50 rounded-2xl p-8 mb-12">
@@ -221,7 +223,19 @@ export default function ExcosPage() {
 // ExcoCard Component
 function ExcoCard({ exco }: { exco: Executive }) {
   return (
-    <div className="w-72 shrink-0 bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-100">
+   <div className="
+  shrink-0
+  w-[260px]
+  sm:w-[280px]
+  md:w-[300px]
+  bg-white
+  rounded-2xl
+  shadow-lg
+  overflow-hidden
+  border border-gray-100
+">
+
+
       {/* Card Image */}
       <div className="relative h-48 bg-linear-to-br from-green-50 to-blue-50">
         <div className="absolute inset-0 flex items-center justify-center">
