@@ -93,6 +93,7 @@ const RegisterPage = () => {
   return (
     <AuthLayout
       title="Create your account"
+      subtitle="Say your voice in SUG HUB"
     >
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-2 gap-4">
