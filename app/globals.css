@@ -38,16 +38,5 @@ Posted by Moesio, modified by community. See post 'Timeline' for change history
 Retrieved 2026-01-16, License - CC BY-SA 3.0
 */
 
-html, 
-body {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: hidden;
-}
-
-
-html {
-  scrollbar-gutter: stable both-edges;
-}
 
 
