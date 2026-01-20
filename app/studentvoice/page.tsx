@@ -89,7 +89,7 @@ function page() {
                     <div className='fixed top-0 left-0  w-full h-16 bg-white'></div>
                     <form
                         onSubmit={handleSubmit}
-                        className="bg-white rounded-2xl sm:p-6 p-4 mb-6 sm:max-w-125 max-w-full w-full mx-auto h-fit mt-15 sm:mt-0 "
+                        className="bg-white rounded-2xl sm:p-6 p-4 mb-6 sm:max-w-125 max-w-full w-full mx-auto h-fit mt-13 sm:mt-0 "
                     >
                         <h2 className="text-xl font-bold mb-4 flex items-center justify-between">Student Voice
                             <button className=" w-8 h-8 rounded-full text-gray-400  flex items-center justify-center text-xl cursor-pointer" onClick={() => setAddMessage(!addMessage)}>

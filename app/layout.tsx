@@ -1,4 +1,4 @@
-'use client'; 
+'use client';
 
 import { usePathname } from 'next/navigation';
 import { Geist, Geist_Mono } from "next/font/google";
@@ -41,9 +41,9 @@ export default function RootLayout({
             <div className="md:flex hidden">
               <Sidebar />
             </div>
-            <div className="md:pl-67.5 flex-1 flex flex-col h-screen pb-10 lg:pb-7 min-h-screen bg-gray-50">
+            <div className="md:pl-67.5 flex-1 flex flex-col h-screen pb-10 lg:pb-7 min-h-screen bg-gray-300 rounded-t-2xl">
               <Header />
-              <div className="bg-gray-300 rounded-t-2xl sm:mr-5 mr-0 sm:p-8 p-4 sm:mt-25 mt-22 lg:mt-25 h-full overflow-y-auto z-0 pt-6 sm:pt-10 md:pt-25 lg:pt-10">
+              <div className=" sm:mr-5 mr-0 sm:p-8 p-4 sm:mt-25 mt-22 lg:mt-25 h-full overflow-y-auto z-0 pt-6 sm:pt-10 md:pt-25 lg:pt-10">
                 {children}
               </div>
               <div className="flex md:hidden fixed bottom-2 left-1/2 -translate-x-1/2 z-10">
