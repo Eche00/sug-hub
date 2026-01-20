@@ -6,8 +6,11 @@ import AuthLayout from '@/components/AuthLayout';
 import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
 import Checkbox from '@/components/ui/Checkbox';
+import { HandleLogin } from '@/utils/logics/authLogic';
+import { useRouter } from 'next/navigation';
 
 const LoginPage = () => {
+  const router = useRouter()
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -35,28 +38,15 @@ const LoginPage = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
 
     setLoading(true);
     try {
-      // API call to login
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, rememberMe }),
-      });
-
-      if (response.ok) {
-        // Handle successful login
-        console.log('Login successful');
-        // Redirect to dashboard
-      } else {
-        const error = await response.json();
-        setErrors({ submit: error.message || 'Invalid credentials' });
-      }
+      await HandleLogin(formData)
+      router.push('/')
     } catch (error) {
       setErrors({ submit: 'An error occurred. Please try again.' });
     } finally {
@@ -93,8 +83,8 @@ const LoginPage = () => {
         <div>
           <div className="flex justify-between items-center mb-2">
             <label className="text-sm font-medium text-gray-700">Password</label>
-            <Link 
-              href="/forgot-password" 
+            <Link
+              href="/forgot-password"
               className="text-sm text-green-800 hover:text-green-900 font-medium"
             >
               Forgot password?

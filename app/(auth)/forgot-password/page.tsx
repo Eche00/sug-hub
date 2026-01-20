@@ -5,6 +5,7 @@ import Link from 'next/link';
 import AuthLayout from '@/components/AuthLayout';
 import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
+import { ResetPassword } from '@/utils/logics/authLogic';
 
 const ForgotPasswordPage = () => {
   const [email, setEmail] = useState<string>('');
@@ -27,26 +28,15 @@ const ForgotPasswordPage = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
 
     setLoading(true);
     try {
-      // API call to send reset password email
-      const response = await fetch('/api/auth/forgot-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      });
-
-      if (response.ok) {
-        setSubmitted(true);
-      } else {
-        const error = await response.json();
-        setErrors({ submit: error.message || 'Failed to send reset email' });
-      }
+      await ResetPassword(email);
+      setSubmitted(true)
     } catch (error) {
       setErrors({ submit: 'An error occurred. Please try again.' });
     } finally {
@@ -72,18 +62,18 @@ const ForgotPasswordPage = () => {
         // Success Message State
         <div className="text-center space-y-6">
           <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg 
-              className="w-8 h-8 text-green-600" 
-              fill="none" 
-              stroke="currentColor" 
+            <svg
+              className="w-8 h-8 text-green-600"
+              fill="none"
+              stroke="currentColor"
               viewBox="0 0 24 24"
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          
+
           <h3 className="text-xl font-semibold text-gray-800">Check your email</h3>
-          
+
           <div className="bg-green-50 border border-green-200 rounded-lg p-4">
             <p className="text-green-800 text-sm">
               We've sent password reset instructions to{' '}
@@ -93,7 +83,7 @@ const ForgotPasswordPage = () => {
               Please check your inbox and follow the link to reset your password.
             </p>
           </div>
-          
+
           <div className="text-sm text-gray-500 space-y-2">
             <p>Didn't receive the email?</p>
             <button
@@ -106,10 +96,10 @@ const ForgotPasswordPage = () => {
               Try again
             </button>
           </div>
-          
+
           <div className="pt-4 border-t border-gray-100">
-            <Link 
-              href="/login" 
+            <Link
+              href="/login"
               className="text-green-800 hover:text-green-900 font-medium inline-flex items-center gap-2"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

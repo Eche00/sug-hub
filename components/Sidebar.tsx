@@ -1,5 +1,6 @@
 'use client';
 
+import { useUserInfo } from '@/utils/logics/userLogic';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -8,6 +9,7 @@ import { usePathname } from 'next/navigation';
 
 function Sidebar() {
     const pathname = usePathname()
+    const { user, loading, handleLogOutUser } = useUserInfo()
 
     // Sidebar Nav 
     const sideBarItems = [
@@ -34,6 +36,11 @@ function Sidebar() {
                 {/* Link Section  */}
                 {sideBarItems.map((item) =>
                     <Link href={item.link} key={item.name} className={pathname === item.link ? 'text-white font-bold bg-[#161B22] py-3 px-4 rounded-lg' : 'text-gray-400 py-3 px-4 rounded-lg hover:bg-[#161B22]/10'}>{item.name}</Link>)}
+                {loading ?
+                    <div className='text-gray-400 py-3 px-4 rounded-lg hover:bg-[#161B22]/10 w-full'></div>
+                    : user?.email &&
+                    <button className='text-white font-bold bg-red-700 py-3 px-4 rounded-lg cursor-pointer' onClick={handleLogOutUser}>Logout</button>
+                }
             </section>
         </div>
     )

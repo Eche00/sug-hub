@@ -7,13 +7,13 @@ import { signOut } from "firebase/auth";
 
 export const useUserInfo = () => {
     const [user, setUser] = useState<any>({});
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     // GETTING CURRENT USER
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(async (authUser) => {
             if (authUser) {
-                const userDocRef = doc(db, "user", authUser.uid);
+                const userDocRef = doc(db, "students", authUser.uid);
                 const userDoc = await getDoc(userDocRef);
                 if (userDoc.exists()) {
                     setUser({ uid: authUser.uid, ...userDoc.data() });
@@ -21,6 +21,7 @@ export const useUserInfo = () => {
                     setUser({ uid: authUser.uid });
                 }
             }
+            setLoading(false)
         });
 
         return () => unsubscribe();
@@ -31,6 +32,7 @@ export const useUserInfo = () => {
         try {
             await signOut(auth)
             toast.success("Signed out successfully");
+            window.location.reload()
         } catch (error) {
             console.error("Logout Failed:", error);
             toast.error("Unable to sign out. Please try again.");

@@ -7,6 +7,7 @@ import "./layout.css";
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
 import Mobilenav from "@/components/Mobilenav";
+import { Toaster } from 'react-hot-toast';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,6 +35,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/logo.png" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} w-full overflow-x-hidden`}>
+        <Toaster position="top-right" />
         {isAuthPage ? (
           children
         ) : (

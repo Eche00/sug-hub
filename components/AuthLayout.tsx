@@ -9,12 +9,12 @@ interface AuthLayoutProps {
 
 const AuthLayout: React.FC<AuthLayoutProps> = ({ children, title, subtitle }) => {
   return (
-    <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4">
-      <div className="max-w-6xl w-full bg-white rounded-2xl shadow-xl overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center p-4">
+      <div className="max-w-6xl w-full bg-white rounded-2xl  overflow-hidden">
         <div className="flex flex-col lg:flex-row">
           {/* Image Column - Hidden on mobile */}
           <div className="hidden lg:block lg:w-1/2 relative min-h-125">
-            <div className="absolute inset-0 bg-linear-to-b from-green-800 to-blue-800 flex items-center justify-center">
+            <div className="absolute inset-0 bg-linear-to-b from-green-800 to-green-800/10  flex items-center justify-center">
               <div className="text-white text-center">
                 <p className="text-blue-200 text-xl">
                   <CallToAction />
@@ -49,7 +49,7 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children, title, subtitle }) =>
                 <h2 className="text-2xl font-bold text-gray-800">{title}</h2>
                 <p className="text-gray-600 mt-2">{subtitle}</p>
               </div>
-              
+
               {children}
             </div>
           </div>

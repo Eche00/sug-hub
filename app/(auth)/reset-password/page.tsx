@@ -5,6 +5,7 @@ import Link from 'next/link';
 import AuthLayout from '@/components/AuthLayout';
 import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
+import { ResetPassword } from '@/utils/logics/authLogic';
 
 const ResetPasswordPage = () => {
   const [formData, setFormData] = useState({
@@ -34,26 +35,14 @@ const ResetPasswordPage = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
 
     setLoading(true);
     try {
-      // API call to reset password
-      const response = await fetch('/api/auth/reset-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        setSubmitted(true);
-      } else {
-        const error = await response.json();
-        setErrors({ submit: error.message || 'Failed to reset password' });
-      }
+      await ResetPassword(formData.password)
     } catch (error) {
       setErrors({ submit: 'An error occurred. Please try again.' });
     } finally {
@@ -79,26 +68,26 @@ const ResetPasswordPage = () => {
         // Success Message State
         <div className="text-center space-y-6">
           <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg 
-              className="w-8 h-8 text-green-600" 
-              fill="none" 
-              stroke="currentColor" 
+            <svg
+              className="w-8 h-8 text-green-600"
+              fill="none"
+              stroke="currentColor"
               viewBox="0 0 24 24"
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          
+
           <h3 className="text-xl font-semibold text-gray-800">Password updated!</h3>
-          
+
           <div className="bg-green-50 border border-green-200 rounded-lg p-4">
             <p className="text-green-800">
               Your password has been successfully reset.
             </p>
           </div>
-          
-          <Link 
-            href="/login" 
+
+          <Link
+            href="/login"
             className="inline-block w-full bg-green-800 hover:bg-green-900 text-white px-6 py-3 rounded-lg font-medium transition"
           >
             Sign in with new password
@@ -144,8 +133,8 @@ const ResetPasswordPage = () => {
           </Button>
 
           <div className="text-center pt-4">
-            <Link 
-              href="/login" 
+            <Link
+              href="/login"
               className="text-green-800 hover:text-green-900 font-medium inline-flex items-center gap-2"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

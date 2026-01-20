@@ -6,14 +6,18 @@ import AuthLayout from '@/components/AuthLayout';
 import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
 import Checkbox from '@/components/ui/Checkbox';
+import { HandleRegisteration } from '@/utils/logics/authLogic';
+import { useRouter } from 'next/navigation';
 
 const RegisterPage = () => {
+  const router = useRouter()
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     confirmPassword: '',
     firstName: '',
     lastName: '',
+    type: 'student',
   });
   const [acceptTerms, setAcceptTerms] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -52,28 +56,15 @@ const RegisterPage = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
 
     setLoading(true);
     try {
-      // API call to register
-      const response = await fetch('/api/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        // Handle successful registration
-        console.log('Registration successful');
-        // Redirect to dashboard or confirmation page
-      } else {
-        const error = await response.json();
-        setErrors({ submit: error.message || 'Registration failed' });
-      }
+      await HandleRegisteration(formData)
+      router.push('/')
     } catch (error) {
       setErrors({ submit: 'An error occurred. Please try again.' });
     } finally {
