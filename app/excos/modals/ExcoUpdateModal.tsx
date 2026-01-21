@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { X, Upload, Save, Mail, Phone, User, Briefcase, Building, FileText, Plus } from 'lucide-react';
 
 interface Executive {
-  id: string;
+  id: number;
   name: string;
   position: string;
   department: string;
@@ -28,7 +28,7 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({
   onUpdate
 }) => {
   const [formData, setFormData] = useState<Executive>({
-    id: '',
+    id: 0,
     name: '',
     position: '',
     department: '',
