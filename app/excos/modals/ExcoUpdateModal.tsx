@@ -1,15 +1,14 @@
-"use client";
-
 import React, { useState, useEffect } from 'react';
-import { X, Upload, Save, Mail, Phone, User, Briefcase, Building, FileText, Plus } from 'lucide-react';
+import { X, Upload, Save, User, Briefcase, Building, FileText, Plus } from 'lucide-react';
 
 interface Executive {
   id: number;
   name: string;
   position: string;
   department: string;
-  bio?: string;
-  image?: string;
+  bio: string;
+  image?: string; // Make this optional
+  imageUrl?: string;
 }
 
 interface ExcoUpdateModalProps {
@@ -17,13 +16,15 @@ interface ExcoUpdateModalProps {
   onClose: () => void;
   excoMember: Executive | null;
   onUpdate: (updatedData: Executive) => Promise<void>;
+  isLoading?: boolean; 
 }
 
 const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({
   isOpen,
   onClose,
   excoMember,
-  onUpdate
+  onUpdate,
+  isLoading = false 
 }) => {
   const [formData, setFormData] = useState<Executive>({
     id: 0,
@@ -34,7 +35,6 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({
     image: ''
   });
   
-  const [loading, setLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [showOtherPositionInput, setShowOtherPositionInput] = useState(false);
   const [otherPositionValue, setOtherPositionValue] = useState('');
@@ -58,7 +58,7 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({
   useEffect(() => {
     if (excoMember) {
       setFormData(excoMember);
-      setImagePreview(excoMember.image || null);
+      setImagePreview(excoMember.image || excoMember.imageUrl || null);
       
       // Check if the position is "Other" or not in the predefined options
       const isOtherPosition = !positionOptions.includes(excoMember.position) && excoMember.position !== '';
@@ -68,27 +68,42 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({
         setFormData(prev => ({ ...prev, position: 'Other' }));
       }
     }
-  }, [excoMember]);
+  }, [excoMember, isOpen]); 
+
+  // Clear form when modal closes
+  useEffect(() => {
+    if (!isOpen) {
+      setFormData({
+        id: 0,
+        name: '',
+        position: '',
+        department: '',
+        bio: '',
+        image: ''
+      });
+      setImagePreview(null);
+      setShowOtherPositionInput(false);
+      setOtherPositionValue('');
+    }
+  }, [isOpen]);
 
   if (!isOpen || !excoMember) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     
     // Prepare final data - if "Other" was selected, use the custom input value
     const finalData = {
       ...formData,
-      position: showOtherPositionInput && otherPositionValue ? otherPositionValue : formData.position
+      position: showOtherPositionInput && otherPositionValue ? otherPositionValue : formData.position,
+      image: imagePreview || formData.image
     };
     
     try {
       await onUpdate(finalData);
-      onClose();
     } catch (error) {
       console.error('Failed to update exco:', error);
-    } finally {
-      setLoading(false);
+      // You might want to show an error message to the user here
     }
   };
 
@@ -99,7 +114,7 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({
       reader.onloadend = () => {
         const result = reader.result as string;
         setImagePreview(result);
-        setFormData(prev => ({ ...prev, imageUrl: result }));
+        setFormData(prev => ({ ...prev, image: result, imageUrl: result }));
       };
       reader.readAsDataURL(file);
     }
@@ -122,9 +137,16 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({
     }
   };
 
+  const handleInputChange = (field: keyof Executive, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 ">
-      <div className="relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl max-h-[83vh] overflow-y-auto sm:mt-10 mt-8 ">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+      <div className="relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl max-h-[85vh] overflow-y-auto">
         {/* Header */}
         <div className="sticky top-0 z-10 bg-white border-b border-gray-200 p-6">
           <div className="flex items-center justify-between">
@@ -136,6 +158,8 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({
               onClick={onClose}
               className="p-2 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
               aria-label="Close modal"
+              type="button"
+              disabled={isLoading}
             >
               <X className="w-5 h-5 text-gray-500" />
             </button>
@@ -169,6 +193,7 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({
                   accept="image/*"
                   onChange={handleImageChange}
                   className="hidden"
+                  disabled={isLoading}
                 />
               </label>
             </div>
@@ -186,10 +211,11 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({
               <input
                 type="text"
                 value={formData.name}
-                onChange={(e) => setFormData({...formData, name: e.target.value})}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition"
+                onChange={(e) => handleInputChange('name', e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition disabled:bg-gray-50 disabled:cursor-not-allowed"
                 placeholder="John Doe"
                 required
+                disabled={isLoading}
               />
             </div>
 
@@ -202,8 +228,9 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({
               <select
                 value={formData.position}
                 onChange={handlePositionChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition appearance-none bg-white"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition appearance-none bg-white disabled:bg-gray-50 disabled:cursor-not-allowed"
                 required
+                disabled={isLoading}
               >
                 <option value="">Select Position</option>
                 {positionOptions.map((pos) => (
@@ -213,7 +240,7 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({
               
               {/* Custom Position Input - Shows when "Other" is selected */}
               {showOtherPositionInput && (
-                <div className="mt-4 animate-fadeIn">
+                <div className="mt-4">
                   <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
                     <Plus className="w-4 h-4 mr-2 text-green-800" />
                     Specify Position
@@ -222,9 +249,10 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({
                     type="text"
                     value={otherPositionValue}
                     onChange={(e) => setOtherPositionValue(e.target.value)}
-                    className="w-full px-4 py-3 border border-green-300 rounded-xl focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition bg-green-50"
+                    className="w-full px-4 py-3 border border-green-300 rounded-xl focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition bg-green-50 disabled:bg-green-100 disabled:cursor-not-allowed"
                     placeholder="Enter custom position (e.g., Assistant Secretary, Event Coordinator)"
                     required={showOtherPositionInput}
+                    disabled={isLoading}
                   />
                   <p className="text-xs text-green-600 mt-2">
                     Please specify the executive position that's not in the list above
@@ -242,10 +270,11 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({
               <input
                 type="text"
                 value={formData.department}
-                onChange={(e) => setFormData({...formData, department: e.target.value})}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-600 focus:border-transparent outline-none transition"
+                onChange={(e) => handleInputChange('department', e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-600 focus:border-transparent outline-none transition disabled:bg-gray-50 disabled:cursor-not-allowed"
                 placeholder="Computer Science"
                 required
+                disabled={isLoading}
               />
             </div>
 
@@ -258,7 +287,7 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({
                 type="text"
                 value={formData.id}
                 readOnly
-                className="w-full px-4 py-3 border border-gray-300 bg-gray-50 rounded-xl outline-none text-gray-600"
+                className="w-full px-4 py-3 border border-gray-300 bg-gray-50 rounded-xl outline-none text-gray-600 cursor-not-allowed"
               />
               <p className="text-xs text-gray-500 mt-2">
                 This ID is automatically generated and cannot be changed
@@ -273,11 +302,12 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({
               </label>
               <textarea
                 value={formData.bio || ''}
-                onChange={(e) => setFormData({...formData, bio: e.target.value})}
+                onChange={(e) => handleInputChange('bio', e.target.value)}
                 rows={4}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-600 focus:border-transparent outline-none transition resize-none"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-600 focus:border-transparent outline-none transition resize-none disabled:bg-gray-50 disabled:cursor-not-allowed"
                 placeholder="Brief description about this executive member..."
                 maxLength={200}
+                disabled={isLoading}
               />
               <div className="flex justify-between items-center mt-1">
                 <p className="text-xs text-gray-500">
@@ -296,16 +326,17 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({
               <button
                 type="button"
                 onClick={onClose}
-                className="w-full sm:w-auto px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors font-medium cursor-pointer"
+                className="w-full sm:w-auto px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors font-medium cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={isLoading}
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                disabled={loading || (showOtherPositionInput && !otherPositionValue)}
+                disabled={isLoading || (showOtherPositionInput && !otherPositionValue)}
                 className="w-full sm:w-auto px-6 py-3 bg-linear-to-r from-green-700 to-green-800 text-white rounded-xl hover:from-green-800 hover:to-green-900 transition-colors font-medium shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
               >
-                {loading ? (
+                {isLoading ? (
                   <>
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                     Updating...
