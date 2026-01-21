@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Upload, Save, User, Briefcase, Plus, Building, Mail, Phone, FileText } from 'lucide-react';
+import { X, Upload, User, Briefcase, Building, FileText } from 'lucide-react';
 import { Executive } from '@/utils/excosData';
 
 interface ExcoUpdateModalProps {
@@ -11,8 +11,8 @@ interface ExcoUpdateModalProps {
 
 const positionOptions = [
   'President', 'Vice President', 'Secretary General', 'Financial Secretary',
-  'Treasurer', 'PRO', 'Welfare Officer', 'Sports Director',
-  'Academic Director', 'Social Director', 'Health Director', 'Other'
+  'Treasurer', 'PRO', 'Welfare Officer', 'Sports Director', 'Academic Director',
+  'Social Director', 'Health Director', 'Other'
 ];
 
 const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({ isOpen, onClose, excoMember, onUpdate }) => {
@@ -57,7 +57,7 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({ isOpen, onClose, exco
       await onUpdate(finalData);
       onClose();
     } catch (error) {
-      console.error('Failed to update exco:', error);
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -78,7 +78,7 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({ isOpen, onClose, exco
 
   const handlePositionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
-    setFormData({ ...formData, position: value });
+    setFormData(prev => ({ ...prev, position: value }));
     setShowOtherPositionInput(value === 'Other');
     if (value !== 'Other') setOtherPositionValue('');
   };
@@ -114,8 +114,8 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({ isOpen, onClose, exco
             </div>
           </div>
 
+          {/* Name, Position, Department, Bio */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Name */}
             <div>
               <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
                 <User className="w-4 h-4 mr-2 text-green-800" /> Full Name
@@ -123,7 +123,6 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({ isOpen, onClose, exco
               <input type="text" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} className="w-full px-4 py-3 border rounded-xl" required />
             </div>
 
-            {/* Position */}
             <div>
               <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
                 <Briefcase className="w-4 h-4 mr-2 text-green-800" /> Position
@@ -138,7 +137,6 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({ isOpen, onClose, exco
               )}
             </div>
 
-            {/* Department */}
             <div>
               <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
                 <Building className="w-4 h-4 mr-2 text-green-800" /> Department
@@ -146,7 +144,6 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({ isOpen, onClose, exco
               <input type="text" value={formData.department} onChange={e => setFormData({ ...formData, department: e.target.value })} className="w-full px-4 py-3 border rounded-xl" required />
             </div>
 
-            {/* Bio */}
             <div className="md:col-span-2">
               <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
                 <FileText className="w-4 h-4 mr-2 text-green-800" /> Bio
@@ -155,7 +152,6 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({ isOpen, onClose, exco
             </div>
           </div>
 
-          {/* Actions */}
           <div className="flex justify-end gap-4">
             <button type="button" onClick={onClose} className="px-6 py-3 border rounded-xl">Cancel</button>
             <button type="submit" disabled={loading || (showOtherPositionInput && !otherPositionValue)} className="px-6 py-3 bg-green-700 text-white rounded-xl">
