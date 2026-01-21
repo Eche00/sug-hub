@@ -2,9 +2,18 @@
 import { useUserInfo } from '@/utils/logics/userLogic'
 import { Search } from '@mui/icons-material'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
 function Header() {
     const { user, loading } = useUserInfo()
+
+    const [searchTerm, setSearchTerm] = useState<string>('')
+    const router = useRouter()
+
+    const handleSearch = (e: React.FormEvent) => {
+        router.push(`/search?query=${encodeURIComponent(searchTerm)}`)
+    }
     return (
         <div className='bg-white sm:py-3 py-2  fixed top-0 left-0 md:left-67.5 right-0 z-10  '>
 
@@ -23,8 +32,12 @@ function Header() {
                             type="text"
                             placeholder='Search...'
                             className='md:flex hidden flex-1 outline-none bg-transparent '
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+
                         />
-                        <Search />
+                        <button onClick={handleSearch} className='hover:text-[#1B7339]  cursor-pointer'> <Search /></button>
+
                     </div>
                 </div>
 
