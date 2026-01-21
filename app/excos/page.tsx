@@ -1,14 +1,100 @@
-// app/excos/page.tsx
 "use client";
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { Edit2 } from 'lucide-react';
 import { excosByYear, getYears, Executive } from '../../utils/excosData';
+import ExcoUpdateModal from './modals/ExcoUpdateModal';
+import { useExcoModal } from '../../utils/logics/useExcoModal';
+
+
+function ExcoCard({ exco, onEdit }: { exco: Executive; onEdit: (exco: Executive) => void }) {
+  const handleViewProfile = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    console.log('View profile clicked for:', exco.name);
+    // Add your view profile logic here
+  };
+
+  const handleContact = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    console.log('Contact clicked for:', exco.name);
+    // Add your contact logic here
+  };
+
+  const handleEditClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    console.log('Edit clicked for:', exco.name);
+    onEdit(exco);
+  };
+
+  return (
+    <div className="shrink-0 w-65 sm:w-70 md:w-75 bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 group hover:shadow-xl transition-all duration-300 relative">
+      {/* Card Image with Edit Overlay */}
+      <div className="relative h-48 bg-linear-to-br from-green-50 to-blue-50 overflow-hidden">
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-32 h-32 bg-linear-to-br from-green-100 to-blue-100 rounded-full flex items-center justify-center">
+            <span className="text-4xl font-bold text-green-800">
+              {exco.name.charAt(0)}
+            </span>
+          </div>
+        </div>
+        
+        {/* Edit Button - FIXED */}
+          <button
+            onClick={handleEditClick}
+            className="absolute top-4 right-4 p-2 bg-white rounded-full shadow-md hover:bg-green-800 hover:scale-110 transition-all duration-200 z-20 cursor-pointer group"
+            aria-label={`Edit ${exco.name}`}
+            type="button">
+          <Edit2 className="w-4 h-4 text-green-800 group-hover:text-white transition-colors duration-200" />
+          </button>
+        
+          <div className="absolute bottom-4 right-4">
+            <span className="px-3 py-1 bg-green-800 text-white text-xs font-semibold rounded-full">
+              {exco.position}
+            </span>
+          </div>
+      </div>
+
+      {/* Card Content */}
+      <div className="p-6">
+        <h4 className="text-xl font-bold text-gray-900 mb-2">{exco.name}</h4>
+        <p className="text-gray-600 mb-3">
+          <span className="font-bold">Department:</span> {exco.department}
+        </p>
+        <p className="text-gray-500 text-sm mb-4 line-clamp-3">{exco.bio}</p>
+
+        {/* Action Buttons - FIXED */}
+        <div className="flex space-x-3 pt-4 border-t border-gray-100">
+          <button
+            onClick={handleViewProfile}
+            className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium active:scale-95 cursor-pointer"
+            type="button"
+          >
+            View Profile
+          </button>
+          <button
+            onClick={handleContact}
+            className="flex-1 px-4 py-2 bg-green-800 text-white rounded-lg hover:bg-green-700 transition-colors text-sm font-medium active:scale-95 cursor-pointer"
+            type="button"
+          >
+            Contact
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function ExcosPage() {
   const router = useRouter();
   const [selectedYear, setSelectedYear] = useState('2024-2025');
   const [mounted, setMounted] = useState(false);
+  
+  // Use the modal hook
+  const { isModalOpen, selectedExco, openModal, closeModal, handleUpdate } = useExcoModal();
 
   const years = getYears();
   const currentExcos = excosByYear[selectedYear] || [];
@@ -31,7 +117,7 @@ export default function ExcosPage() {
   }
 
   return (
-     <main>
+    <main>
       {/* Header */}
       <div className="bg-linear-to-r from-green-800 to-blue-800 text-white rounded-tr-xl rounded-tl-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -61,10 +147,11 @@ export default function ExcosPage() {
                 <button
                   key={year}
                   onClick={() => handleYearClick(year)}
-                  className={`px-6 py-3 rounded-full font-medium transition-all duration-300 transform hover:scale-105 ${selectedYear === year
-                    ? 'hover:bg-green-900 bg-green-800 text-white shadow-lg shadow-green-200 cursor-pointer'
-                    : 'hover: bg-gray-50  text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400 cursor-pointer'
-                    }`}
+                  className={`px-6 py-3 rounded-full font-medium transition-all cursor-pointer duration-300 transform hover:scale-105 ${
+                    selectedYear === year
+                      ? 'bg-green-800 text-white shadow-lg shadow-green-200 hover:bg-green-900'
+                      : 'bg-gray-50 text-gray-700 border border-gray-300 hover:bg-gray-100 hover:border-gray-400'
+                  }`}
                 >
                   {year}
                   {selectedYear === year && (
@@ -84,30 +171,39 @@ export default function ExcosPage() {
           </div>
         </div>
 
-    
         {/* Executives Scroller Section */}
-<div className="mb-16 w-full overflow-hidden">
-  <div className="flex items-center justify-between mb-6 px-4 sm:px-0">
-    <h3 className="text-2xl font-bold text-gray-900">
-      {selectedYear} Executive Committee
-    </h3>
-    <div className="text-gray-600 hidden sm:block">
-      <span className="font-medium">{currentExcos.length}</span> members
-    </div>
-  </div>
+        <div className="mb-16 w-full overflow-hidden">
+          <div className="flex items-center justify-between mb-6 px-4 sm:px-0">
+            <h3 className="text-2xl font-bold text-gray-900 ">
+              {selectedYear} Executive Committee
+            </h3>
+            <div className="flex items-center gap-4">
+              <div className="text-gray-600 hidden sm:block">
+                <span className="font-medium py-1 px-2 rounded-full bg-green-800 text-white ">{currentExcos.length}</span> members
+              </div>
+              {/* <button 
+                className="px-4 py-2 bg-green-800 text-white rounded-lg hover:bg-green-700 transition-colors text-sm font-medium hidden sm:block cursor-pointer"
+                onClick={() => console.log('Add new exco')}
+              >
+                + Add New
+              </button> */}
+            </div>
+          </div>
 
-  <div className="relative w-full overflow-hidden">
-  <div className="overflow-x-auto overscroll-x-contain scrollbar-hide">
-    <div className="flex gap-4 px-4 sm:px-6 py-4 w-max">
-      {currentExcos.map((exco: Executive) => (
-        <ExcoCard key={exco.id} exco={exco} />
-      ))}
-    </div>
-  </div>
-</div>
-
-</div>
-
+          <div className="relative w-full overflow-hidden">
+            <div className="overflow-x-auto overscroll-x-contain scrollbar-hide">
+              <div className="flex gap-4 px-4 sm:px-6 py-4 w-max">
+                {currentExcos.map((exco: Executive) => (
+                  <ExcoCard 
+                    key={exco.id} 
+                    exco={exco} 
+                    onEdit={openModal}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
 
         {/* Quick Stats */}
         <div className="bg-linear-to-r from-green-50 to-blue-50 rounded-2xl p-8 mb-12">
@@ -216,59 +312,14 @@ export default function ExcosPage() {
           </div>
         </div>
       </div>
+
+      {/* Exco Update Modal */}
+      <ExcoUpdateModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        excoMember={selectedExco}
+        onUpdate={handleUpdate}
+      />
     </main>
-  );
-}
-
-// ExcoCard Component
-function ExcoCard({ exco }: { exco: Executive }) {
-  return (
-   <div className="
-  shrink-0
-  w-[260px]
-  sm:w-[280px]
-  md:w-[300px]
-  bg-white
-  rounded-2xl
-  shadow-lg
-  overflow-hidden
-  border border-gray-100
-">
-
-
-      {/* Card Image */}
-      <div className="relative h-48 bg-linear-to-br from-green-50 to-blue-50">
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-32 h-32 bg-linear-to-br from-green-100 to-blue-100 rounded-full flex items-center justify-center">
-            <span className="text-4xl font-bold text-green-800">
-              {exco.name.charAt(0)}
-            </span>
-          </div>
-        </div>
-        <div className="absolute bottom-4 right-4">
-          <span className="px-3 py-1 bg-green-800 text-white text-xs font-semibold rounded-full">
-            {exco.position}
-          </span>
-        </div>
-      </div>
-
-      {/* Card Content */}
-      <div className="p-6">
-        <h4 className="text-xl font-bold text-gray-900 mb-2">{exco.name}</h4>
-        <p className="text-gray-600 mb-3">
-          <span className="font-bold">Department:</span> {exco.department}
-        </p>
-        <p className="text-gray-500 text-sm mb-4">{exco.bio}</p>
-
-        <div className="flex space-x-3 pt-4 border-t border-gray-100">
-          <button className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium cursor-pointer">
-            View Profile
-          </button>
-          <button className="flex-1 px-4 py-2 bg-green-800 text-white rounded-lg hover:bg-green-700 transition-colors text-sm font-medium cursor-pointer">
-            Contact
-          </button>
-        </div>
-      </div>
-    </div>
   );
 }
