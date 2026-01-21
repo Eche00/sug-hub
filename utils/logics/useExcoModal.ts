@@ -5,19 +5,19 @@ export const useExcoModal = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedExco, setSelectedExco] = useState<Executive | null>(null);
 
-  const openModal = (excoMember: Executive) => {
+  const openExcoModal = (excoMember: Executive) => {
     setSelectedExco(excoMember);
     setIsModalOpen(true);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const closeExcoModal = () => {
     setSelectedExco(null);
+    setIsModalOpen(false);
   };
 
   const handleUpdate = async (updatedData: Executive): Promise<void> => {
     console.log('Updated exco data:', updatedData);
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       setTimeout(() => {
         console.log('Exco updated successfully:', updatedData);
         resolve();
@@ -28,8 +28,8 @@ export const useExcoModal = () => {
   return {
     isModalOpen,
     selectedExco,
-    openModal,
-    closeModal,
-    handleUpdate
+    openExcoModal,
+    closeExcoModal,
+    handleUpdate,
   };
 };
