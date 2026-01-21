@@ -137,8 +137,6 @@ export const useAnnouncementLogic = () => {
 
         if (navigator.share) {
             navigator.share({
-                title,
-                text,
                 url: shareUrl,
             }).catch(err => console.error("Share cancelled", err));
         } else {
