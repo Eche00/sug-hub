@@ -9,7 +9,7 @@ function AnnouncementDetail() {
     const { user } = useUserInfo()
     const {
         announcements,
-        loadingAnnouncements, handleAddComment, commentText, setCommentText, commentLoading, viewAnnouncements, handleShare
+        handleAddComment, commentText, setCommentText, commentLoading, viewAnnouncements, handleShare
     } = useAnnouncementLogic()
     return (
         <div className=" flex flex-col gap-8 justify-center sm:mb-0 mb-22">

@@ -34,7 +34,7 @@ function Header() {
                 </div> : user?.email ?
                     <div className="flex flex-1 items-end justify-end gap-2 ">
                         <p className="  text-gray-800 text-[12px] font-bold flex flex-col items-end">{user.firstName} <span className=' text-gray-400 text-[10px] font-bold '>{user.type}</span></p>
-                        <p className="sm:w-12.5 sm:h-12.5 w-10 h-10 rounded-full bg-black text-white border-2 border-[#1B7339] flex items-center justify-center">{user.firstName.slice(0, 1)}</p>
+                        <Link href="/profile" className="sm:w-12.5 sm:h-12.5 w-10 h-10 rounded-full bg-black text-white border-2 border-[#1B7339] flex items-center justify-center cursor-pointer">{user.firstName.slice(0, 1)}</Link>
 
                     </div> :
                     <div className="flex flex-1 items-center justify-end gap-5 md:pl-2 ">

@@ -33,7 +33,7 @@ function page() {
     if (loading || !announcement) return <Loader />;
 
     return (
-        <div className="w-full  mx-auto sm:mb-0 mb-20">
+        <div className="w-full  mx-auto sm:mb-0 mb-22">
 
             {/* Announcement Card */}
             <div className="bg-white rounded-2xl relative cursor-pointer hover:text">
