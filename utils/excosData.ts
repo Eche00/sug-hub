@@ -1,4 +1,4 @@
-// app/data/excosData.ts
+
 export interface Executive {
   id: number;
   name: string;
