@@ -23,7 +23,7 @@ function AnnouncementDetail() {
                 }><Share fontSize='small' /></button>
                 {/* Header  */}
                 <div className="flex items-center gap-3 p-4">
-                    <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/new-year-background-736885_1280.jpg" alt="" className="w-10 h-10 rounded-full bg-gray-300 object-cover" />
+                    <img src="/logo.png" alt="" className="w-10 h-10 rounded-full bg-white border-2 border-green-800 object-cover" />
                     <div>
                         <p className="font-semibold text-sm">{announcement.name}</p>
                         <p className="text-xs text-gray-500">{announcement.createdAt ? announcement.createdAt.toDate().toLocaleString() : "No date"}</p>
