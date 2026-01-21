@@ -101,7 +101,7 @@ function page() {
                     <input
                         type="text"
                         placeholder="Drop a comment..."
-                        className="flex-1 outline-none bg-gray-200 rounded-lg py-2 px-4"
+                        className="flex-1 outline-none bg-gray-200 rounded-lg py-2 px-4 min-w-2"
                         onChange={e => setCommentText(e.target.value)}
                         value={commentText}
                     />
