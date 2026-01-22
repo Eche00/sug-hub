@@ -17,7 +17,7 @@ export default function Page() {
     }
 
     return (
-        <div className=" flex items-center justify-center sm:mb-0 mb-22">
+        <div className=" flex items-center justify-center ">
             {loading ? <Loader /> : user.email ?
                 <motion.div
                     initial={{ opacity: 0, y: 16 }}
@@ -26,7 +26,7 @@ export default function Page() {
                     className="max-w-3xl w-full mx-auto"
                 >
                     {/* HEADER */}
-                    <div className="mb-8 sm:flex flex-col hidden"> <h1 className="sm:text-3xl text-2xl font-semibold text-gray-900"> Profile </h1> <p className="mt-2 text-sm text-gray-500"> None of your cresidentials can be updated as of now. </p> </div>
+                    <div className="mb-8"> <h1 className="sm:text-3xl text-2xl font-semibold text-gray-900"> Profile </h1> <p className="mt-2 text-sm text-gray-500"> None of your cresidentials can be updated as of now. </p> </div>
                     <div className="bg-white border border-gray-200 rounded-3xl shadow-sm p-8 space-y-7">
 
                         {/* SECTION HEADER */} <div className="pb-4 border-b"> <h2 className="text-lg font-medium text-gray-800"> Student Details </h2> </div>

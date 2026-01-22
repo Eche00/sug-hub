@@ -30,7 +30,7 @@ export default function AnnouncementPage() {
                 className="max-w-3xl w-full mx-auto"
             >
                 {/* HEADER */}
-                <div className="mb-8 sm:flex flex-col hidden"> <h1 className="sm:text-3xl text-2xl font-semibold text-gray-900"> New Announcement </h1> <p className="mt-2 text-sm text-gray-500"> Publish updates that will be visible to all students. </p> </div>
+                <div className="mb-8"> <h1 className="sm:text-3xl text-2xl font-semibold text-gray-900"> New Announcement </h1> <p className="mt-2 text-sm text-gray-500"> Publish updates that will be visible to all students. </p> </div>
 
                 {/* FORM */}
                 <form onSubmit={handleSubmit} className="bg-white border border-gray-200 rounded-3xl shadow-sm p-8 space-y-7" >

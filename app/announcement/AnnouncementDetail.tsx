@@ -12,7 +12,7 @@ function AnnouncementDetail() {
         handleAddComment, commentText, setCommentText, commentLoading, viewAnnouncements, handleShare
     } = useAnnouncementLogic()
     return (
-        <div className=" flex flex-col gap-8 justify-center sm:mb-0 mb-22">
+        <div className=" flex flex-col gap-8 justify-center ">
             {announcements.map((announcement, index) => (<div className="w-full  bg-white rounded-2xl relative" key={index}>
                 <button className='absolute top-5 right-5 cursor-pointer hover:text-[#1B7339]' onClick={() =>
                     handleShare(

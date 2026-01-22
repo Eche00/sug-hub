@@ -34,7 +34,7 @@ function page() {
             <section className='flex gap-8 '>
                 <div className=" flex flex-1 w-full  ">
                     {/* Card Stack */}
-                    <div className="  flex flex-col gap-4  items-center justify-center h-fit w-full lg:pb-0 pb-22 ">
+                    <div className="  flex flex-col gap-4  items-center justify-center h-fit w-full  ">
                         {/* Card Stack */}
                         {loadingMessages || messages.length < 1 ? <Loader /> : messages.map((card, index) => (
                             <motion.div
