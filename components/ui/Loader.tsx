@@ -1,7 +1,7 @@
 import { anonymousMessageLogic } from "@/utils/logics/anonymousMessageLogic";
 import React from "react";
 
-function Loader({ label = "Loading..." }: { label?: string }) {
+function Loader() {
     const { messages } = anonymousMessageLogic()
 
     return (
@@ -24,11 +24,7 @@ function Loader({ label = "Loading..." }: { label?: string }) {
                 </div>
             </div>
 
-            {/* Text */}
-            <p className="mt-4 text-sm font-semibold tracking-wide text-[#1B7339]">
-                {/* {messages.length <= 0 ? "No messages yet" : label} */}
-                {label}
-            </p>
+
         </section>
     );
 }
