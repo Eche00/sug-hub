@@ -3,10 +3,8 @@ export interface Executive {
   name: string;
   position: string;
   department: string;
-  image: string;  // required
-  bio: string;    // required
-  email?: string;
-  phone?: string;
+  image: string;  
+  bio: string;    
 }
 
 export interface ExcosByYear {
