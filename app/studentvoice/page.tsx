@@ -34,7 +34,7 @@ function page() {
             <section className='flex gap-8 '>
                 <div className=" flex flex-1 w-full  ">
                     {/* Card Stack */}
-                    <div className="  flex flex-col gap-4  items-center justify-center h-fit w-full lg:pb-0 pb-22 ">
+                    <div className="  flex flex-col gap-4  items-center justify-center h-fit w-full  ">
                         {/* Card Stack */}
                         {loadingMessages || messages.length < 1 ? <Loader /> : messages.map((card, index) => (
                             <motion.div
@@ -81,7 +81,7 @@ function page() {
                                             className={`
       group flex items-center gap-2 px-3 py-1.5 rounded-full
       border text-sm font-medium transition-all duration-200 cursor-pointer
-      ${card.likedBy?.includes(user.uid)
+      ${card.likedBy?.includes(user?.uid)
                                                     ? "bg-green-100 text-[#1B7339] border-green-200"
                                                     : "bg-white text-gray-600 border-gray-200 hover:border-green-300 hover:text-green-600"
                                                 }
@@ -90,7 +90,7 @@ function page() {
                                         >
                                             <ThumbUpIcon
                                                 fontSize="small"
-                                                className={`transition ${card.likedBy?.includes(user.uid) ? "scale-110" : "group-hover:scale-110"
+                                                className={`transition ${card.likedBy?.includes(user?.uid) ? "scale-110" : "group-hover:scale-110"
                                                     }`}
                                             />
                                             <span>{card.likes}</span>
@@ -102,7 +102,7 @@ function page() {
                                             className={`
       group flex items-center gap-2 px-3 py-1.5 rounded-full
       border text-sm font-medium transition-all duration-200 cursor-pointer
-      ${card.dislikedBy?.includes(user.uid)
+      ${card.dislikedBy?.includes(user?.uid)
                                                     ? "bg-red-100 text-red-600 border-red-200"
                                                     : "bg-white text-gray-600 border-gray-200 hover:border-red-300 hover:text-red-500"
                                                 }
@@ -111,7 +111,7 @@ function page() {
                                         >
                                             <ThumbDownIcon
                                                 fontSize="small"
-                                                className={`transition ${card.dislikedBy?.includes(user.uid) ? "scale-110" : "group-hover:scale-110"
+                                                className={`transition ${card.dislikedBy?.includes(user?.uid) ? "scale-110" : "group-hover:scale-110"
                                                     }`}
                                             />
                                             <span>{card.dislikes}</span>

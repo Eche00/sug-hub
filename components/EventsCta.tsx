@@ -1,109 +1,116 @@
-import React from 'react'
-import { LocalActivityOutlined, Message, SendTimeExtension } from '@mui/icons-material'
-import Link from 'next/link'
+"use client";
 
-const events = [
-    {
-        title: 'The Top Healthcare Events & Conferences of 2023',
-        time: '6 hours',
-        avatars: 4,
-    },
-    {
-        title: 'Virtual Health Care Congress (VHC2023)',
-        time: '10 hours',
-        avatars: 4,
-    },
-    {
-        title: 'Digital Health & Personalized Medicine Conference – Barcelona, Spain',
-        time: '2 days',
-        avatars: 4,
-    },
-]
-const Anonymousmsg = [
-
-    {
-        title: 'Virtual Health Care Congress (VHC2023)',
-        time: '10 hours',
-        avatars: 4,
-    },
-
-]
+import React from "react";
+import Link from "next/link";
+import {
+    LocalActivityOutlined,
+    Message,
+    SendTimeExtension,
+} from "@mui/icons-material";
+import { useAnnouncementLogic } from "@/utils/logics/createAnnouncementLogic";
+import { anonymousMessageLogic } from "@/utils/logics/anonymousMessageLogic";
 
 function EventsCta() {
+    const {
+        announcements,
+        loadingAnnouncements,
+        viewAnnouncements,
+    } = useAnnouncementLogic();
+
+    const {
+        messages,
+        loadingMessages,
+    } = anonymousMessageLogic();
+
     return (
-        <div className='hidden lg:flex flex-1 bg-white rounded-lg h-fit p-5 flex-col shadow-sm overflow-scroll'>
-            <div className='flex items-center justify-between mb-4'>
-                <h2 className='text-lg font-semibold text-gray-900'>Recent Events 2023</h2>
-                <SendTimeExtension className='w-5 h-5 text-gray-400 cursor-pointer' />
+        <div className="hidden lg:flex flex-1 bg-white rounded-lg h-fit p-5 flex-col shadow-sm overflow-hidden">
+            {/* HEADER */}
+            <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-semibold text-gray-900">
+                    Campus Updates
+                </h2>
+                <SendTimeExtension className="w-5 h-5 text-gray-400" />
             </div>
-            {/* Recent events posted  */}
-            <div className='flex flex-col gap-4 border-b border-gray-200 pb-4'>
-                {events.map((event, index) => (
-                    <div
-                        key={index}
-                        className='flex items-start justify-between gap-3 p-3 rounded-md hover:bg-gray-50 transition'
-                    >
-                        <div className='flex items-start gap-3'>
-                            <div className='w-10 h-10 rounded-md bg-green-100 flex items-center justify-center'>
-                                <div className='w-6 h-6 bg-green-500 rounded-sm flex items-center justify-center' ><LocalActivityOutlined className='w-5 h-5 text-white cursor-pointer' /></div>
-                            </div>
 
-                            <div>
-                                <p className='text-sm font-medium text-gray-900 leading-snug'>
-                                    {event.title}
-                                </p>
-                                <span className='text-xs text-gray-400'>{event.time}</span>
+            {/* ================= ANNOUNCEMENTS ================= */}
+            <div className="flex flex-col gap-3 border-b border-gray-200 pb-4 mb-4">
+                <p className="text-sm font-semibold text-gray-700">
+                    Recent Announcements
+                </p>
+
+                {loadingAnnouncements ? (
+                    <div className="flex items-center justify-center">
+                        <div className="w-10 h-10 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    </div>
+                ) : announcements.slice(0, 2).map((ann) => (
+                    <div
+                        key={ann.id}
+                        onClick={() => viewAnnouncements(ann.id)}
+                        className="flex items-start gap-3 p-3 rounded-md hover:bg-gray-50 transition cursor-pointer"
+                    >
+                        <div className="w-10 h-10 rounded-md bg-green-100 flex items-center justify-center">
+                            <div className="w-6 h-6 bg-green-500 rounded-sm flex items-center justify-center">
+                                <LocalActivityOutlined className="w-4 h-4 text-white" />
                             </div>
                         </div>
 
-                        <div className='flex -space-x-2'>
-                            {Array.from({ length: event.avatars }).map((_, i) => (
-                                <div
-                                    key={i}
-                                    className='w-6 h-6 rounded-full bg-gray-200 border-2 border-white'
-                                />
-                            ))}
+                        <div className="flex-1">
+                            <p className="text-sm font-medium text-gray-900 line-clamp-2">
+                                {ann.title}
+                            </p>
+                            <span className="text-xs text-gray-400">
+                                {ann.createdAt
+                                    ? ann.createdAt.toDate().toLocaleDateString()
+                                    : "Unknown date"}
+                            </span>
                         </div>
                     </div>
                 ))}
-                <Link href="/events" className=' text-white bg-[#1B7339] hover:bg-[#1B7339]/90 font-bold  py-2 px-7 rounded-lg cursor-pointer w-fit mx-3'>View Events</Link>
             </div>
-            {/* Recent Aonymous message  */}
-            <div className='flex flex-col gap-4 '>
-                {Anonymousmsg.map((event, index) => (
-                    <div
-                        key={index}
-                        className='flex items-start justify-between gap-3 p-3 rounded-md hover:bg-gray-50 transition'
-                    >
-                        <div className='flex items-start gap-3'>
-                            <div className='w-10 h-10 rounded-md bg-green-100 flex items-center justify-center'>
-                                <div className='w-6 h-6 bg-green-500 rounded-sm flex items-center justify-center' ><Message className='w-5 h-5 text-white cursor-pointer' /></div>
-                            </div>
 
-                            <div>
-                                <p className='text-sm font-medium text-gray-900 leading-snug'>
-                                    {event.title}
-                                </p>
-                                <span className='text-xs text-gray-400'>{event.time}</span>
+            {/* ================= STUDENT VOICE ================= */}
+            <div className="flex flex-col gap-3">
+                <p className="text-sm font-semibold text-gray-700">
+                    Student Voice
+                </p>
+
+                {loadingMessages ? (
+                    <div className="flex items-center justify-center">
+                        <div className="w-10 h-10 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    </div>
+                ) : messages.slice(0, 2).map((msg) => (
+                    <div
+                        key={msg.id}
+                        className="flex items-start gap-3 p-3 rounded-md hover:bg-gray-50 transition"
+                    >
+                        <div className="w-10 h-10 rounded-md bg-green-100 flex items-center justify-center">
+                            <div className="w-6 h-6 bg-green-500 rounded-sm flex items-center justify-center">
+                                <Message className="w-4 h-4 text-white" />
                             </div>
                         </div>
 
-                        <div className='flex -space-x-2'>
-                            {Array.from({ length: event.avatars }).map((_, i) => (
-                                <div
-                                    key={i}
-                                    className='w-6 h-6 rounded-full bg-gray-200 border-2 border-white'
-                                />
-                            ))}
-
+                        <div className="flex-1">
+                            <p className="text-sm font-medium text-gray-900 line-clamp-2">
+                                {msg.title}
+                            </p>
+                            <span className="text-xs text-gray-400">
+                                {msg.createdAt
+                                    ? msg.createdAt.toDate().toLocaleDateString()
+                                    : "Unknown date"}
+                            </span>
                         </div>
                     </div>
                 ))}
-                <Link href="/studentvoice" className=' text-white bg-[#1B7339] hover:bg-[#1B7339]/90 font-bold  py-2 px-7 rounded-lg cursor-pointer w-fit mx-3'>View Messages</Link>
 
+                <Link
+                    href="/studentvoice"
+                    className="text-white bg-[#1B7339] hover:bg-[#1B7339]/90 font-semibold py-2 px-6 rounded-lg w-fit"
+                >
+                    View More
+                </Link>
             </div>
         </div>
-    )
+    );
 }
 
-export default EventsCta
+export default EventsCta;

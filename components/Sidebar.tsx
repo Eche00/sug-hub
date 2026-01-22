@@ -18,7 +18,9 @@ function Sidebar() {
         { name: "Events", link: '/events', icon: 'calendar' },
         { name: "Excos", link: '/excos', icon: 'people' },
         { name: "Student Voice", link: '/studentvoice', icon: 'speak' },
+
     ];
+    // create exco admin nav link should be added here and it would automatically be in the admin route 
     const adminRoute = [
         { name: "Add Announcement", link: '/createannouncement', icon: 'announcement' },
     ];
@@ -41,13 +43,31 @@ function Sidebar() {
                     <Link href={item.link} key={item.name} className={pathname === item.link ? 'text-white font-bold bg-[#161B22] py-3 px-4 rounded-lg' : 'text-gray-400 py-3 px-4 rounded-lg hover:bg-[#161B22]/10'}>{item.name}</Link>)
                 }
                 {/* Admin Links  */}
-                {adminRoute.map((item) =>
-                    <Link href={item.link} key={item.name} className={pathname === item.link ? 'text-white font-bold bg-[#161B22] py-3 px-4 rounded-lg' : 'text-gray-400 py-3 px-4 rounded-lg hover:bg-[#161B22]/10'}>{item.name}</Link>)
-                }
+                {loading ? (
+                    <div className="text-gray-400 py-3 px-4 rounded-lg w-full" />
+                ) : (
+                    user &&
+                    user.type !== "student" &&
+                    adminRoute.map((item) => (
+                        <Link
+                            href={item.link}
+                            key={item.name}
+                            className={
+                                pathname === item.link
+                                    ? "text-white font-bold bg-[#161B22] py-3 px-4 rounded-lg"
+                                    : "text-gray-400 py-3 px-4 rounded-lg hover:bg-[#161B22]/10"
+                            }
+                        >
+                            {item.name}
+                        </Link>
+                    ))
+                )}
+
+                {/* Logout for auth users  */}
                 {loading ?
                     <div className='text-gray-400 py-3 px-4 rounded-lg hover:bg-[#161B22]/10 w-full'></div>
                     : user?.email &&
-                    <button className='text-white font-bold bg-red-700 py-3 px-4 rounded-lg cursor-pointer' onClick={handleLogOutUser}>Logout</button>
+                    <button className='text-white font-bold bg-red-700 py-3 px-4 rounded-lg hover:bg-red-700/80 transition cursor-pointer duration-300' onClick={handleLogOutUser}>Sign Out</button>
                 }
             </section>
         </div>

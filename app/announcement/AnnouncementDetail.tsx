@@ -9,11 +9,11 @@ function AnnouncementDetail() {
     const { user } = useUserInfo()
     const {
         announcements,
-        loadingAnnouncements, handleAddComment, commentText, setCommentText, commentLoading, viewAnnouncements, handleShare
+        handleAddComment, commentText, setCommentText, commentLoading, viewAnnouncements, handleShare
     } = useAnnouncementLogic()
     return (
-        <div className=" flex flex-col gap-8 justify-center sm:mb-0 mb-22">
-            {announcements.map((announcement, index) => (<div className="w-full  bg-white rounded-2xl relative" key={index}>
+        <div className=" flex flex-col gap-8 justify-center ">
+            {announcements.map((announcement: any, index: number) => (<div className="w-full  bg-white rounded-2xl relative" key={index}>
                 <button className='absolute top-5 right-5 cursor-pointer hover:text-[#1B7339]' onClick={() =>
                     handleShare(
                         announcement.id,
@@ -23,7 +23,7 @@ function AnnouncementDetail() {
                 }><Share fontSize='small' /></button>
                 {/* Header  */}
                 <div className="flex items-center gap-3 p-4">
-                    <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/new-year-background-736885_1280.jpg" alt="" className="w-10 h-10 rounded-full bg-gray-300 object-cover" />
+                    <img src="/logo.png" alt="" className="w-10 h-10 rounded-full bg-white border-2 border-green-800 object-cover" />
                     <div>
                         <p className="font-semibold text-sm">{announcement.name}</p>
                         <p className="text-xs text-gray-500">{announcement.createdAt ? announcement.createdAt.toDate().toLocaleString() : "No date"}</p>
@@ -52,9 +52,9 @@ function AnnouncementDetail() {
                 {/* Actions  */}
                 <div className="flex  px-4 py-3 text-sm text-gray-600 b sm:gap-8 gap-4">
 
-                    {user.email ? <p className="sm:w-12.5 sm:h-12.5 w-10 h-10 rounded-full bg-black text-white border-2 border-[#1B7339] flex items-center justify-center">{user.firstName.slice(0, 1)}</p> : <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center"><Attribution /></div>}
+                    {user?.email ? <p className="sm:w-12.5 sm:h-12.5 w-10 h-10 rounded-full bg-black text-white border-2 border-[#1B7339] flex items-center justify-center">{user?.firstName.slice(0, 1)}</p> : <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center"><Attribution /></div>}
 
-                    <input type="text" placeholder='Drop a comment...' className='flex flex-1 outline-none  bg-gray-200 rounded-lg py-2 px-4' value={commentText}
+                    <input type="text" placeholder='Drop a comment...' className='flex flex-1 outline-none  bg-gray-200 rounded-lg py-2 px-4 min-w-2' value={commentText}
                         onChange={e => setCommentText(e.target.value)} />  <button className=' text-white bg-[#1B7339] py-2 px-4 rounded-lg cursor-pointer' onClick={() => handleAddComment(announcement.id, commentText)} disabled={commentLoading}>
                         {commentLoading ? <div className="flex items-center justify-center">
                             <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>

@@ -110,7 +110,8 @@ export const anonymousMessageLogic = () => {
         }
     };
 
-    const userId = user.uid; // later replace with auth uid
+    const userId = user?.uid || null;
+    // later replace with auth uid
 
     const handleLike = async (card: Message) => {
         if (!userId) {

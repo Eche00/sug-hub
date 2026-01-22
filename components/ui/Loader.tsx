@@ -5,7 +5,7 @@ function Loader({ label = "Loading..." }: { label?: string }) {
     const { messages } = anonymousMessageLogic()
 
     return (
-        <section className="w-full min-h-[90vh] z-0 flex flex-col items-center justify-center  ">
+        <section className="w-full h-[90vh] z-0 flex flex-col items-center justify-center  ">
             {/* Logo + Spinner */}
             <div className="relative flex items-center justify-center">
                 {/* Outer rotating ring */}
