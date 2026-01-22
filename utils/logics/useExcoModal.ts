@@ -1,19 +1,14 @@
+// utils/logics/useExcoModal.ts - COMPATIBLE VERSION
 import { useState } from 'react';
+import { Executive as ExcosDataExecutive } from '@/utils/excosData';
 
-interface Executive {
-  id: string;
-  name: string;
-  position: string;
-  department: string;
-  email?: string;
-  phone?: string;
-  bio?: string;
-  imageUrl?: string;
-}
+// Use the same interface from excosData
+type Executive = ExcosDataExecutive;
 
 export const useExcoModal = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedExco, setSelectedExco] = useState<Executive | null>(null);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   const openModal = (excoMember: Executive) => {
     setSelectedExco(excoMember);
@@ -23,25 +18,39 @@ export const useExcoModal = () => {
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedExco(null);
+    setIsUpdating(false);
   };
 
   const handleUpdate = async (updatedData: Executive): Promise<void> => {
-    // Here you would typically make an API call
-    console.log('Updated exco data:', updatedData);
+    setIsUpdating(true);
     
-    // Simulate API call
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        // In a real app, you would update your state or make API call here
-        console.log('Exco updated successfully:', updatedData);
-        resolve();
-      }, 1500);
-    });
+    try {
+      // Simulate API call
+      console.log('Updating exco:', updatedData);
+      
+      await new Promise((resolve) => {
+        setTimeout(() => {
+          console.log('Update complete');
+          resolve(null);
+        }, 1500);
+      });
+      
+      // In a real app, you would update your state here
+      // For now, we'll just close the modal
+      closeModal();
+      
+    } catch (error) {
+      console.error('Update failed:', error);
+      throw error;
+    } finally {
+      setIsUpdating(false);
+    }
   };
 
   return {
     isModalOpen,
     selectedExco,
+    isUpdating,
     openModal,
     closeModal,
     handleUpdate

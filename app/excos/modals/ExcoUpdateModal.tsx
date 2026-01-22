@@ -1,28 +1,26 @@
+// app/excos/modals/ExcoUpdateModal.tsx - RESOLVED VERSION
 import React, { useState, useEffect } from 'react';
 import { X, Upload, Save, User, Briefcase, Building, FileText, Plus } from 'lucide-react';
-
-interface Executive {
-  id: number;
-  name: string;
-  position: string;
-  department: string;
-  bio: string;
-  image?: string; 
-  imageUrl?: string;
-}
+import { Executive } from '@/utils/excosData';
 
 interface ExcoUpdateModalProps {
   isOpen: boolean;
   onClose: () => void;
   excoMember: Executive | null;
   onUpdate: (updatedData: Executive) => Promise<void>;
-  isLoading?: boolean; 
+  isLoading?: boolean;
 }
 
-const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({
-  isOpen,
-  onClose,
-  excoMember,
+const positionOptions = [
+  'President', 'Vice President', 'Secretary General', 'Financial Secretary',
+  'Treasurer', 'PRO', 'Welfare Officer', 'Sports Director', 'Academic Director',
+  'Social Director', 'Health Director', 'Other'
+];
+
+const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({ 
+  isOpen, 
+  onClose, 
+  excoMember, 
   onUpdate,
   isLoading = false 
 }) => {
@@ -31,34 +29,18 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({
     name: '',
     position: '',
     department: '',
-    bio: '',
-    image: ''
+    image: '',
+    bio: ''
   });
   
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [showOtherPositionInput, setShowOtherPositionInput] = useState(false);
   const [otherPositionValue, setOtherPositionValue] = useState('');
 
-  const positionOptions = [
-    'President',
-    'Vice President',
-    'Secretary General',
-    'Financial Secretary',
-    'Treasurer',
-    'PRO',
-    'Welfare Officer',
-    'Sports Director',
-    'Academic Director',
-    'Social Director',
-    'Health Director',
-    'Other'
-  ];
-
-  // Initialize form with exco data when modal opens
   useEffect(() => {
     if (excoMember) {
       setFormData(excoMember);
-      setImagePreview(excoMember.image || excoMember.imageUrl || null);
+      setImagePreview(excoMember.image || null);
       
       // Check if the position is "Other" or not in the predefined options
       const isOtherPosition = !positionOptions.includes(excoMember.position) && excoMember.position !== '';
@@ -68,7 +50,7 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({
         setFormData(prev => ({ ...prev, position: 'Other' }));
       }
     }
-  }, [excoMember, isOpen]); 
+  }, [excoMember, isOpen]);
 
   // Clear form when modal closes
   useEffect(() => {
@@ -93,17 +75,16 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({
     e.preventDefault();
     
     // Prepare final data - if "Other" was selected, use the custom input value
-    const finalData = {
+    const finalData: Executive = {
       ...formData,
       position: showOtherPositionInput && otherPositionValue ? otherPositionValue : formData.position,
       image: imagePreview || formData.image
     };
-    
+
     try {
       await onUpdate(finalData);
     } catch (error) {
       console.error('Failed to update exco:', error);
-      // You might want to show an error message to the user here
     }
   };
 
@@ -114,7 +95,7 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({
       reader.onloadend = () => {
         const result = reader.result as string;
         setImagePreview(result);
-        setFormData(prev => ({ ...prev, image: result, imageUrl: result }));
+        setFormData(prev => ({ ...prev, image: result }));
       };
       reader.readAsDataURL(file);
     }
@@ -122,7 +103,7 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({
 
   const handlePositionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
-    setFormData({...formData, position: value});
+    setFormData(prev => ({ ...prev, position: value }));
     
     // Show/hide the "Other" input field
     if (value === 'Other') {
@@ -166,9 +147,8 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({
           </div>
         </div>
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
-          {/* Profile Image Section */}
+          {/* Profile Image */}
           <div className="flex flex-col items-center mb-2">
             <div className="relative mb-4">
               <div className="w-32 h-32 rounded-full border-4 border-white shadow-xl overflow-hidden bg-linear-to-br from-green-50 to-blue-50">
@@ -200,13 +180,11 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({
             <p className="text-sm text-gray-500">Click icon to update profile photo</p>
           </div>
 
-          {/* Form Grid */}
+          {/* Name, Position, Department, Bio */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Name */}
             <div>
               <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
-                <User className="w-4 h-4 mr-2 text-green-800" />
-                Full Name
+                <User className="w-4 h-4 mr-2 text-green-800" /> Full Name
               </label>
               <input
                 type="text"
@@ -219,11 +197,9 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({
               />
             </div>
 
-            {/* Position */}
             <div>
               <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
-                <Briefcase className="w-4 h-4 mr-2 text-green-800" />
-                Position
+                <Briefcase className="w-4 h-4 mr-2 text-green-800" /> Position
               </label>
               <select
                 value={formData.position}
@@ -233,12 +209,9 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({
                 disabled={isLoading}
               >
                 <option value="">Select Position</option>
-                {positionOptions.map((pos) => (
-                  <option key={pos} value={pos}>{pos}</option>
-                ))}
+                {positionOptions.map(pos => <option key={pos} value={pos}>{pos}</option>)}
               </select>
-              
-              {/* Custom Position Input - Shows when "Other" is selected */}
+
               {showOtherPositionInput && (
                 <div className="mt-4">
                   <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
@@ -261,11 +234,9 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({
               )}
             </div>
 
-            {/* Department */}
             <div>
               <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
-                <Building className="w-4 h-4 mr-2 text-green-800" />
-                Department
+                <Building className="w-4 h-4 mr-2 text-green-800" /> Department
               </label>
               <input
                 type="text"
@@ -294,14 +265,12 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({
               </p>
             </div>
 
-            {/* Bio */}
             <div className="md:col-span-2">
               <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
-                <FileText className="w-4 h-4 mr-2 text-green-800" />
-                Biography / Description
+                <FileText className="w-4 h-4 mr-2 text-green-800" /> Bio
               </label>
               <textarea
-                value={formData.bio || ''}
+                value={formData.bio}
                 onChange={(e) => handleInputChange('bio', e.target.value)}
                 rows={4}
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-600 focus:border-transparent outline-none transition resize-none disabled:bg-gray-50 disabled:cursor-not-allowed"
@@ -313,8 +282,8 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({
                 <p className="text-xs text-gray-500">
                   Provide a brief description of the executive member's role and responsibilities
                 </p>
-                <span className={`text-xs ${(formData.bio?.length || 0) > 180 ? 'text-red-500' : 'text-gray-500'}`}>
-                  {formData.bio?.length || 0}/200
+                <span className={`text-xs ${formData.bio.length > 180 ? 'text-red-500' : 'text-gray-500'}`}>
+                  {formData.bio.length}/200
                 </span>
               </div>
             </div>
