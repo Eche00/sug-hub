@@ -62,49 +62,12 @@ The **Student Voice** feature allows students to share concerns and suggestions 
 
 **Form Fields**
 
-* Category (optional)
+* Category (required)
 * Message (required)
 * Submit anonymously
-* Character counter
+* title  (required)
 * Success / error feedback
 
----
-
-##  Safety & Moderation
-
-### Keyword Filtering System
-
-To prevent abuse:
-
-1. Messages are converted to lowercase
-2. Scanned against a banned words list
-3. Offensive content is either:
-
-   * Blocked
-   * Or masked before storage
-
-#### Example Banned Words JSON
-
-```json
-{
-  "bannedWords": [
-    "abuse",
-    "threat",
-    "violence",
-    "hate"
-  ]
-}
-```
-
----
-
-###  Blocked Message Response
-
-```json
-{
-  "error": "Your message contains restricted words. Please revise and submit again."
-}
-```
 
 ---
 
@@ -120,7 +83,7 @@ To prevent abuse:
       "category": "Academics",
       "message": "We need more library hours during exams.",
       "createdAt": "2026-03-10T14:22:00",
-      "status": "unreviewed"
+      "title": "Bad Library"
     }
   ]
 }
