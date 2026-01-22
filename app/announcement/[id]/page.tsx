@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import { ArrowOutward, Attribution, Send, Share } from '@mui/icons-material'
 import { useParams } from 'next/navigation';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, onSnapshot } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import Loader from '@/components/ui/Loader';
 import { useUserInfo } from '@/utils/logics/userLogic';
@@ -15,28 +15,30 @@ function page() {
     const announcementId: any = params.id;
     const [announcement, setAnnouncement] = useState<any>(null);
     const [loading, setLoading] = useState(true);
-    const { handleShare } = useAnnouncementLogic()
+    const { handleShare, setCommentText, commentText, handleAddComment, commentLoading } = useAnnouncementLogic()
     useEffect(() => {
-        const fetchAnnouncement = async () => {
-            setLoading(true);
-            const docRef = doc(db, 'announcements', announcementId);
-            const docSnap = await getDoc(docRef);
-            if (docSnap.exists()) {
-                setAnnouncement(docSnap.data());
-            }
-            setLoading(false);
-        };
+        if (!announcementId) return;
 
-        fetchAnnouncement();
+        const docRef = doc(db, "announcements", announcementId);
+
+        const unsubscribe = onSnapshot(docRef, (docSnap) => {
+            if (docSnap.exists()) {
+                setAnnouncement({ id: docSnap.id, ...docSnap.data() });
+                setLoading(false);
+            }
+        });
+
+        return () => unsubscribe();
     }, [announcementId]);
+
 
     if (loading || !announcement) return <Loader />;
 
     return (
-        <div className="w-full  mx-auto sm:mb-0 mb-20">
+        <div className="w-full  mx-auto ">
 
             {/* Announcement Card */}
-            <div className="bg-white rounded-2xl relative cursor-pointer hover:text">
+            <div className="bg-white  rounded-2xl relative cursor-pointer hover:text ">
                 <button className="absolute top-5 right-5 cursor-pointer hover:text-[#1B7339]" onClick={() =>
                     handleShare(
                         announcement.id,
@@ -49,7 +51,7 @@ function page() {
 
                 {/* Header */}
                 <div className="flex items-center gap-3 p-4">
-                    <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/new-year-background-736885_1280.jpg" alt="" className="w-10 h-10 rounded-full bg-gray-300 object-cover" />
+                    <img src="/logo.png" alt="" className="w-10 h-10 rounded-full bg-white border-2 border-green-800 object-cover" />
                     <div>
                         <p className="font-semibold text-sm">{announcement.name}</p>
                         <p className="text-xs text-gray-500">Aug 12, 2026 · 6:40 PM</p>
@@ -96,16 +98,21 @@ function page() {
 
                 {/* Comment Input */}
                 <div className="flex px-4 py-3 gap-4 border-t">
-                    {user.email ? <p className="sm:w-12.5 sm:h-12.5 w-10 h-10 rounded-full bg-black text-white border-2 border-[#1B7339] flex items-center justify-center">{user.firstName.slice(0, 1)}</p> : <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center"><Attribution /></div>}
+                    {user?.email ? <p className="sm:w-12.5 sm:h-12.5 w-10 h-10 rounded-full bg-black text-white border-2 border-[#1B7339] flex items-center justify-center">{user?.firstName.slice(0, 1)}</p> : <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center"><Attribution /></div>}
 
                     <input
                         type="text"
                         placeholder="Drop a comment..."
-                        className="flex-1 outline-none bg-gray-200 rounded-lg py-2 px-4"
+                        className="flex-1 outline-none bg-gray-200 rounded-lg py-2 px-4 min-w-2"
+                        onChange={e => setCommentText(e.target.value)}
+                        value={commentText}
                     />
 
-                    <button className="text-white bg-[#1B7339] py-2 px-4 rounded-lg">
-                        <Send />
+                    <button className="text-white bg-[#1B7339] py-2 px-4 rounded-lg cursor-pointer"
+                        onClick={() => handleAddComment(announcement.id, commentText)} disabled={commentLoading}>
+                        {commentLoading ? <div className="flex items-center justify-center">
+                            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        </div> : <Send />}
                     </button>
                 </div>
             </div>

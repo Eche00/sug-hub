@@ -96,7 +96,7 @@ export default function AnnouncementPage() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="px-6 py-2.5 rounded-xl bg-green-600 text-white text-sm font-medium hover:bg-green-700 transition disabled:opacity-50"
+                            className="px-6 py-2.5 rounded-xl bg-green-800 text-white text-sm font-medium hover:bg-green-700 transition disabled:opacity-50 cursor-pointer"
                         >
                             {loading ? 'Publishing…' : 'Publish Announcement'}
                         </button>
