@@ -1,4 +1,3 @@
-// app/excos/page.tsx - RESOLVED VERSION
 "use client";
 
 import { useState, useEffect } from 'react';
@@ -21,8 +20,6 @@ function ExcoCard({ exco }: { exco: Executive }) {
     console.log('Contact clicked for:', exco.name);
   };
 
-function ExcoCard({ exco, onEdit }: { exco: Executive; onEdit: (exco: Executive) => void }) {
-  const { user } = useUserInfo()
   const handleEditClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
@@ -38,10 +35,6 @@ function ExcoCard({ exco, onEdit }: { exco: Executive; onEdit: (exco: Executive)
             <span className="text-4xl font-bold text-green-800">
               {exco.name.charAt(0)}
             </span>
-      <div className="relative h-48 bg-gradient-to-br from-green-50 to-blue-50 overflow-hidden">
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-32 h-32 bg-gradient-to-br from-green-100 to-blue-100 rounded-full flex items-center justify-center">
-            <span className="text-4xl font-bold text-green-800">{exco.name.charAt(0)}</span>
           </div>
         </div>
         
@@ -102,9 +95,6 @@ export default function ExcosPage() {
   const years = getYears();
   const currentExcos = excosByYear[selectedYear] || [];
 
-  // Modal hook
-  const { isModalOpen, selectedExco, openExcoModal, closeExcoModal, handleUpdate, isUpdating } = useExcoModal();
-
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -134,7 +124,7 @@ export default function ExcosPage() {
     <>
       <main className={`transition-all duration-300 ${showModal ? 'opacity-50 pointer-events-none' : ''}`}>
         {/* Header */}
-        <div className="bg-gradient-to-r from-green-800 to-blue-800 text-white rounded-tr-xl rounded-tl-xl">
+        <div className="bg-linear-to-r from-green-800 to-blue-800 text-white rounded-tr-xl rounded-tl-xl">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div className="text-center">
               <h1 className="text-5xl md:text-4xl font-bold text-gray-100 mb-4">
@@ -185,7 +175,6 @@ export default function ExcosPage() {
               </div>
             </div>
           </div>
-        </div>
 
           {/* Executives Scroller Section */}
           <div className="mb-16 w-full overflow-hidden">
@@ -213,9 +202,6 @@ export default function ExcosPage() {
                     >
                       <ExcoCard exco={exco} />
                     </div>
-                      exco={exco} 
-                      onEdit={openExcoModal}
-                    />
                   ))}
                 </div>
               </div>
@@ -223,7 +209,7 @@ export default function ExcosPage() {
           </div>
 
           {/* Quick Stats */}
-          <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-8 mb-12">
+          <div className="bg-linear-to-r from-green-50 to-blue-50 rounded-2xl p-8 mb-12">
             <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">
               Executive Committee Stats
             </h3>
@@ -333,14 +319,6 @@ export default function ExcosPage() {
 
     
       {showModal && <ExcoUpdateModal onClose={closeModal} />}
-      {/* Modal */}
-      <ExcoUpdateModal
-        isOpen={isModalOpen}
-        onClose={closeExcoModal}
-        excoMember={selectedExco}
-        onUpdate={handleUpdate}
-        isLoading={isUpdating}
-      />
     </>
   );
 }

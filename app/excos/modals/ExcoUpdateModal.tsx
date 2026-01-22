@@ -37,13 +37,6 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({ onClose }) => {
   const handlePositionChange = () => console.log('Position changed');
   const handleInputChange = () => console.log('Input changed');
 
-  const handleInputChange = (field: keyof Executive, value: string) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
-  };
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
       <div className="relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl max-h-[85vh] overflow-y-auto">
@@ -69,7 +62,7 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({ onClose }) => {
           {/* Profile Image Section */}
           <div className="flex flex-col items-center mb-2">
             <div className="relative mb-4">
-              <div className="w-32 h-32 rounded-full border-4 border-white shadow-xl overflow-hidden bg-gradient-to-br from-green-50 to-blue-50">
+              <div className="w-32 h-32 rounded-full border-4 border-white shadow-xl overflow-hidden bg-linear-to-br from-green-50 to-blue-50">
                 {imagePreview ? (
                   <img 
                     src={imagePreview} 
@@ -224,8 +217,6 @@ const ExcoUpdateModal: React.FC<ExcoUpdateModalProps> = ({ onClose }) => {
               <button
                 type="submit"
                 className="w-full sm:w-auto px-6 py-3 bg-linear-to-r from-green-700 to-green-800 text-white rounded-xl hover:from-green-800 hover:to-green-900 transition-colors font-medium shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer"
-                disabled={isLoading || (showOtherPositionInput && !otherPositionValue)}
-                className="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-green-700 to-green-800 text-white rounded-xl hover:from-green-800 hover:to-green-900 transition-colors font-medium shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Save className="w-4 h-4" />
                 Update Executive
