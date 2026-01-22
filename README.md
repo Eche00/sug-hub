@@ -41,14 +41,11 @@ The platform prioritizes **clarity, moderation, and student safety**.
 ## 🗂️ Site Structure
 
 ```
-Home
+app
  ├── About SUG
  ├── Announcements
  ├── Events
  ├── EXCOs
- │     ├── 2022/2023
- │     ├── 2023/2024
- │     └── 2024/2025
  ├── Student Voice (Anonymous Feedback)
 ```
 
@@ -278,3 +275,12 @@ Admin Actions
 •	Flag for attention
 •	Resolve after action is taken
 •	Remove if it breaks platform rules
+
+
+---
+
+### V2 updates
+
+Adding Football management system
+Admin management completion
+landing page animation
